@@ -2,11 +2,13 @@ const express=require("express");
 const multer=require("multer");
 const uploadImage=require("./services/imageUpload.services");
 const postModel=require("./models/post.models");
+const cors=require("cors");
 
 const app=express();
 
 const upload=multer({storage:multer.memoryStorage()});
 app.use(express.json());
+app.use(cors());
 
 app.post("/create-post",upload.array("gallery",5),async (req,res)=>{
     const images=[];
@@ -23,4 +25,11 @@ app.post("/create-post",upload.array("gallery",5),async (req,res)=>{
     });
 })
 
+app.get("/posts",async (req,res)=>{
+    const data=await postModel.find();
+    res.status(201).json({
+        message:"data fetched successfully",
+        data
+    })
+})
 module.exports=app;
