@@ -27,9 +27,6 @@ app.post("/create-post",upload.array("gallery",5),async (req,res)=>{
 
 app.get("/posts",async (req,res)=>{
     const data=await postModel.find();
-    res.status(201).json({
-        message:"data fetched successfully",
-        data
-    })
+    res.status(201).send(data);
 })
 module.exports=app;
