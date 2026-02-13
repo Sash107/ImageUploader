@@ -2,6 +2,7 @@
 import React from 'react';
 import { useState ,useEffect} from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 function create_post(){
     const [image,setImage]=useState([]);
@@ -17,17 +18,18 @@ function create_post(){
         axios.post("http://localhost:3000/create-post",mypost).then((res)=>{
             setImage([]);
             setCaption("");
+            alert("Post Created Successfully");
         }).catch((err)=>{
             console.log(err);
         });
     }
     return(
-        <div className='p-5  max-w-[700px] mx-auto'>
+        <div className='p-5  max-w-[700px] mx-auto bg-gray-100'>
             <h1 className='text-3xl font-bold mb-5'>Create Post</h1>
             <form className='p-3 border-2 flex flex-col gap-3' onSubmit={handleSubmit}>
                 <label className='p-2 border-2 cursor-pointer text-gray-600'>
                     Choose Image
-                <input  type="file" multiple accept='image/*' className='border-2 hidden' onChange={(e)=>{
+                <input  type="file" multiple accept='image/*' className='hidden' onChange={(e)=>{
                     image.length+e.target.files.length<=5?
                     (
                         setImage([...image, ...e.target.files])
@@ -37,7 +39,7 @@ function create_post(){
                     )
                 }}/>
                 </label>
-                <div className='flex flex-col text-[10px] font-bold border-2 border-amber-600'>
+                <div className='flex flex-col text-[10px] font-bold'>
                     {
                         image.map((img,idx)=>{
                             return <div key={idx} className='font-serif italic text-sm'>
@@ -46,7 +48,7 @@ function create_post(){
                         })
                     }
                 </div>
-                <textarea  rows={1} className='overflow-hidden border-2 p-3 w-full rounded-2xl resize-none ' placeholder='Enter Caption' onInput={(e)=>{
+                <textarea  rows={1} value={caption} className='overflow-hidden border-2 p-3 w-full rounded-2xl resize-none ' placeholder='Enter Caption' onInput={(e)=>{
                     e.target.style.height="auto";
                     e.target.style.height=e.target.scrollHeight+"px";
                 }}
@@ -57,6 +59,9 @@ function create_post(){
                     Submit
                 </button>
             </form>
+            <Link href="/posts" className='block m-3 bg-blue-500 w-fit text-white text-xl p-2 px-7 rounded-3xl'>
+                See All Post
+            </Link>
         </div>
     );
 }
